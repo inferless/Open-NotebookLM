@@ -63,33 +63,7 @@ def create_podcast_conversion_messages(summary, host1="Alex", host2="Romen"):
     ]
 
 
-def convert_script_format(podcast_script: str, alex_to_speaker: str = "[MIKE]", romen_to_speaker: str = "[JANE]") -> str:
-    lines = podcast_script.strip().split('\n')
-    converted_lines = []
-    
-    for line in lines:
-        line = line.strip()
-        if not line:
-            continue
-            
-        # Convert Alex to specified speaker
-        if line.startswith('Alex:'):
-            converted_line = line.replace('Alex:', alex_to_speaker, 1)
-            converted_lines.append(converted_line)
-        # Convert Romen to specified speaker  
-        elif line.startswith('Romen:'):
-            converted_line = line.replace('Romen:', romen_to_speaker, 1)
-            converted_lines.append(converted_line)
-        # Skip other lines (like scratchpad content)
-        
-    return '\n'.join(converted_lines)
-
-
-
 def clean_podcast_script(script_text: str) -> list:
-    """
-    Clean and parse the podcast script into individual dialogue lines
-    """
     lines = []
     
     # Split by lines and clean
@@ -122,19 +96,14 @@ def clean_podcast_script(script_text: str) -> list:
 
 
 def clean_utterance_for_tts(utterance: str) -> str:
-    """
-    Clean utterance text for optimal TTS processing
-    """
     # Remove markdown formatting
-    utterance = re.sub(r'\*\*(.*?)\*\*', r'\1', utterance)  # Remove **bold**
-    utterance = re.sub(r'\*(.*?)\*', r'\1', utterance)      # Remove *italic*
+    utterance = re.sub(r'\*\*(.*?)\*\*', r'\1', utterance)
+    utterance = re.sub(r'\*(.*?)\*', r'\1', utterance)
     
-    # Clean up special characters that might cause TTS issues
-    utterance = utterance.replace('—', ' - ')  # Em dash to regular dash
-    utterance = utterance.replace('"', '"').replace('"', '"')  # Smart quotes
-    utterance = utterance.replace(''', "'").replace(''', "'")  # Smart apostrophes
+    utterance = utterance.replace('—', ' - ')
+    utterance = utterance.replace('"', '"').replace('"', '"')
+    utterance = utterance.replace(''', "'").replace(''', "'")
     
-    # Handle acronyms for better pronunciation
     acronym_replacements = {
         'AI': 'A I',
         'API': 'A P I',
@@ -150,7 +119,6 @@ def clean_utterance_for_tts(utterance: str) -> str:
     for acronym, replacement in acronym_replacements.items():
         utterance = re.sub(rf'\b{acronym}\b', replacement, utterance)
     
-    # Remove extra whitespace
     utterance = ' '.join(utterance.split())
     
     return utterance
