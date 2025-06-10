@@ -1,6 +1,6 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from kokoro import KModel, KPipeline
-from utils import create_summarization_messages, create_podcast_conversion_messages,convert_script_format, clean_podcast_script, clean_utterance_for_tts, extract_pdf_content
+from utils import create_summarization_messages, create_podcast_conversion_messages, clean_podcast_script, clean_utterance_for_tts, extract_pdf_content
 import time
 import numpy as np
 import soundfile as sf
