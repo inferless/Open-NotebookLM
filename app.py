@@ -31,10 +31,8 @@ class InferlessPythonModel:
         messages_content = extract_pdf_content(request.pdf_url)
         summary_content = self.generate_text(self.tokenizer, self.model,create_summarization_messages(messages_content))
         tts_content = self.generate_text(self.tokenizer, self.model,create_podcast_conversion_messages(summary_content))
-
-        converted_script = convert_script_format(tts_content)    
         all_audio = []
-        for sr, audio_segment in self.generate_podcast_audio(converted_script, self.kmodel, self.kpipeline, self.MALE_VOICE, self.FEMALE_VOICE):
+        for sr, audio_segment in self.generate_podcast_audio(tts_content, self.kmodel, self.kpipeline, self.MALE_VOICE, self.FEMALE_VOICE):
             all_audio.append(audio_segment)
             pause = np.zeros(int(sr * 0.5))
             all_audio.append(pause)
@@ -82,14 +80,14 @@ class InferlessPythonModel:
         lines = clean_podcast_script(podcast_script)
 
         for i, line in enumerate(lines):            
-            if line.startswith("[MIKE]"):
+            if line.startswith("[Alex]"):
                 pipeline_voice = pipeline_voice_male
                 voice = male_voice
-                utterance = line[len("[MIKE]"):].strip()
-            elif line.startswith("[JANE]"):
+                utterance = line[len("[Alex]"):].strip()
+            elif line.startswith("[Roman]"):
                 pipeline_voice = pipeline_voice_female
                 voice = female_voice
-                utterance = line[len("[JANE]"):].strip()
+                utterance = line[len("[Roman]"):].strip()
             else:
                 continue
             
