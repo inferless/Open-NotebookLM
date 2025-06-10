@@ -84,10 +84,10 @@ class InferlessPythonModel:
                 pipeline_voice = pipeline_voice_male
                 voice = male_voice
                 utterance = line[len("[Alex]"):].strip()
-            elif line.startswith("[Roman]"):
+            elif line.startswith("[Romen]"):
                 pipeline_voice = pipeline_voice_female
                 voice = female_voice
-                utterance = line[len("[Roman]"):].strip()
+                utterance = line[len("[Romen]"):].strip()
             else:
                 continue
             
