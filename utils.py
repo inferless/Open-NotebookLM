@@ -115,7 +115,7 @@ def clean_podcast_script(script_text: str) -> list:
             continue
             
         # Only keep dialogue lines
-        if line.startswith('[MIKE]') or line.startswith('[JANE]'):
+        if line.startswith('[Alex]') or line.startswith('[Romen]'):
             lines.append(line)
     
     return lines
