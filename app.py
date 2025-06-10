@@ -1,6 +1,6 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from kokoro import KModel, KPipeline
-from utils import create_summarization_messages, create_podcast_conversion_messages, clean_podcast_script, clean_utterance_for_tts, extract_pdf_content
+from utils import convert_script_format, create_summarization_messages, create_podcast_conversion_messages, clean_podcast_script, clean_utterance_for_tts, extract_pdf_content
 import time
 import numpy as np
 import soundfile as sf
@@ -31,8 +31,9 @@ class InferlessPythonModel:
         messages_content = extract_pdf_content(request.pdf_url)
         summary_content = self.generate_text(self.tokenizer, self.model,create_summarization_messages(messages_content))
         tts_content = self.generate_text(self.tokenizer, self.model,create_podcast_conversion_messages(summary_content))
+        converted_script = convert_script_format(tts_content)
         all_audio = []
-        for sr, audio_segment in self.generate_podcast_audio(tts_content, self.kmodel, self.kpipeline, self.MALE_VOICE, self.FEMALE_VOICE):
+        for sr, audio_segment in self.generate_podcast_audio(converted_script, self.kmodel, self.kpipeline, self.MALE_VOICE, self.FEMALE_VOICE):
             all_audio.append(audio_segment)
             pause = np.zeros(int(sr * 0.5))
             all_audio.append(pause)
