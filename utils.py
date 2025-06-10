@@ -30,11 +30,11 @@ def create_summarization_messages(content):
         }
     ]
 
-def create_podcast_conversion_messages(summary, host1="Alex", host2="Romen"):
+def create_podcast_conversion_messages(summary):
     return [
         {
             "role": "system", 
-            "content": PODCAST_CONVERSION_PROMPT.replace("Alex", host1).replace("Romen", host2)
+            "content": PODCAST_CONVERSION_PROMPT
         },
         {
             "role": "user",
@@ -48,7 +48,7 @@ def create_podcast_conversion_messages(summary, host1="Alex", host2="Romen"):
 
                             1. **<scratchpad>** - Plan how to transform the summary insights into natural conversation, including the best analogies, examples, and discussion flow
 
-                            2. **Generate the full podcast dialogue** between {host1} and {host2} that:
+                            2. **Generate the full podcast dialogue** between Alex and Romen that:
                             - Opens with a compelling hook based on the summary's most engaging aspects
                             - Incorporates the key insights and fascinating facts naturally into conversation
                             - Uses suggested analogies and examples to explain complex concepts
@@ -56,7 +56,7 @@ def create_podcast_conversion_messages(summary, host1="Alex", host2="Romen"):
                             - Builds complexity gradually while staying accessible  
                             - Includes genuine reactions and natural speech patterns
                             - Concludes with key takeaways woven naturally into closing dialogue
-                            - Follows exact formatting: Each dialogue line separate with "{host1}:" or "{host2}:" tags
+                            - Follows exact formatting: Each dialogue line separate with "Alex:" or "Romen:" tags
 
                             Aim for a substantial, in-depth discussion (2000+ words) that thoroughly explores the summarized material while keeping listeners engaged and entertained."""
         }
@@ -140,3 +140,22 @@ def extract_pdf_content(pdf_url):
     except Exception as e:
         print(f"Failed to extract PDF: {e}")
         return ""
+
+def convert_script_format(podcast_script: str):
+    lines = podcast_script.strip().split('\n')
+    converted_lines = []
+
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+
+        if line.startswith('Alex:'):
+            converted_line = line.replace('Alex:','[Alex]', 1)
+            converted_lines.append(converted_line)
+
+        elif line.startswith('Romen:'):
+            converted_line = line.replace('Romen:','[Romen]', 1)
+            converted_lines.append(converted_line)
+
+    return '\n'.join(converted_lines)
