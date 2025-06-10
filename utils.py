@@ -64,17 +64,6 @@ def create_podcast_conversion_messages(summary, host1="Alex", host2="Romen"):
 
 
 def convert_script_format(podcast_script: str, alex_to_speaker: str = "[MIKE]", romen_to_speaker: str = "[JANE]") -> str:
-    """
-    Convert the podcast script from Alex/Romen format to the expected TTS format
-    
-    Args:
-        podcast_script: Script with "Alex:" and "Romen:" tags
-        alex_to_speaker: What to replace "Alex:" with (default: "[MIKE]")
-        romen_to_speaker: What to replace "Romen:" with (default: "[JANE]")
-    
-    Returns:
-        Converted script with proper speaker tags
-    """
     lines = podcast_script.strip().split('\n')
     converted_lines = []
     
